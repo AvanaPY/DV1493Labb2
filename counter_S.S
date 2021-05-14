@@ -6,48 +6,36 @@ GPIO:		.quad 0
 	.global interrupt
 
 interrupt:
-	add $1, counter
+	call dump_gpio
 	ret
 
 setup:
 	movq $counter, %rax
 	addq $0x11, %rax		# gpio is exactly 0x11 steps from counter
 	movq %rax, GPIO
+
+	movq $3, %rax
+	movq GPIO, %rbx
+
+	movb $'1', (%rbx, %rax, 1)
 	
+	addq $1, %rax
+	movb $'0', (%rbx, %rax, 1)
+	
+	addq $1, %rax
+	movb $'1', (%rbx, %rax, 1)
+	
+	addq $1, %rax
+	movb $'0', (%rbx, %rax, 1)
 
 
-	# Make GPIO pin 0 input
-	movq $0xC000, %rbx
-	orq %rax, %rbx
-	movq $1, (%rbx)		
-	#
-
-	movq $0x2, %rbx
-	sal $6, %rbx
-	 	
-	# Make GPIO pin 1 output
+	movq $0x2, %rax
+	sal $6, %rax
+	sal $6, %rax
+break:	
 	movq %rbx, %rcx
-	sal $6, %rcx
 	orq %rax, %rcx
-	movq $1, (%rcx)
-
-	# Make GPIO pin 2 output
-	movq %rbx, %rcx
-	sal $4, %rcx
-	orq %rax, %rcx
-	movq $1, (%rcx)
-
-	# Make GPIO pin 3 output
-	movq %rbx, %rcx
-	sal $2, %rcx
-	orq %rax, %rcx
-	movq $1, (%rcx)
-
-	# Make GPIO pin 4 output
-	movq %rbx, %rcx
-	sal $0, %rcx
-	orq %rax, %rcx
-	movq $1, (%rcx)
+	movb $1, (%rbx)	
 	
 	ret
 
@@ -60,6 +48,9 @@ setup:
 #
 ################
 setLow:
+	movq GPIO, %rax
+	addq $3, %rdi
+	movb $'1', (%rax, %rdi, 1)
 	ret
 
 ################
