@@ -39,6 +39,7 @@ main(int argc, char *argv[]) {
 			gpio[2] = btn;
 			interrupt();
 		}
+		fflush(stdout);
 	}
 	system("/bin/stty cooked");
 	printf("\n");

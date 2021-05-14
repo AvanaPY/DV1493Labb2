@@ -17,9 +17,12 @@ setup:
 
 
 	# Make GPIO pin 0 input
-	movq $3, %rbx
-	salq $14, %rbx
+	movq $0xC000, %rbx
+	orq %rax, %rbx
 	movq $1, (%rbx)		
-
 	#
+
+	
+
+
 	ret
