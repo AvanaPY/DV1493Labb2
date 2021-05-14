@@ -10,12 +10,16 @@ interrupt:
 	ret
 
 setup:
-	movq $0x404061, %rax
-	xor %rbx, %rbx
-	movb (%rax), %bl
-	movb 1(%rax), %bl
-	movb 2(%rax), %bl
-	movb 3(%rax), %bl
+	movq $counter, %rax
+	addq $0x11, %rax		# gpio is exactly 0x11 steps from counter
 	movq %rax, GPIO
-	movq $1, 3(%rax)
+	
+
+
+	# Make GPIO pin 0 input
+	movq $3, %rbx
+	salq $14, %rbx
+	movq $1, (%rbx)		
+
+	#
 	ret
