@@ -6,7 +6,6 @@ GPIO:		.quad 0
 	.global interrupt
 
 interrupt:
-	call dump_gpio
 	ret
 
 setup:
