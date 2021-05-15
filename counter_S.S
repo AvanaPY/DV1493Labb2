@@ -33,9 +33,7 @@ setup:
 	salw $6, %ax
 	orw %ax, (%rbx) # moves 00000000 10000000 into GPIO 4 (output and it is on)
 
-	ret
-
-					# sum   11101010 10000000 = ea, 80 (in hex)
+			# sum   11101010 10000000 = ea, 80 (in hex)
 
 	ret
 ################
