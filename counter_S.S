@@ -10,45 +10,35 @@ interrupt:
 	ret
 
 setup:
-	movq $counter, %rax
-	# addq $0x11, %rax		# gpio is exactly 0x11 steps from counter
-	# movq %rax, GPIO
 	movq $0x601061, GPIO
 
 	movq GPIO, %rbx
 
-	movq $3, %rax
-	salq $14, %rax
-	orq %rbx, %rax # sets pin 0 to input
+	movw $3, %ax
+	salw $14, %ax
+	orw %ax, (%rbx) # moves 11000000 00000000 into GPIO 0 (input and it is on)
 
-	# movq $0x2, %rax
-	# salq $6, %rax
-	# salq $6, %rax
-	# orq %rbx, %rax # sets pin 1 to output
+	movw $2, %ax
+	salw $12, %ax
+	orw %ax, (%rbx) # moves 00100000 00000000 into GPIO 1 (output and it is on)
 
-	# movq $0x2, %rax
-	# salq $6, %rax
-	# salq $4, %rax
-	# orq %rbx, %rax # sets pin 2 to output
+	movw $2, %ax
+	salw $10, %ax
+	orw %ax, (%rbx) # moves 00001000 00000000 into GPIO 2 (output and it is on)
 
-	# movq $0x2, %rax
-	# salq $6, %rax
-	# salq $2, %rax
-	# orq %rbx, %rax # sets pin 3 to output
+	movw $2, %ax
+	salw $8, %ax
+	orw %ax, (%rbx) # moves 00000010 00000000 into GPIO 3 (output and it is on)
 
-	# movq $0x2, %rax
-	# salq $6, %rax
-	# salq $0, %rax
-	# orq %rbx, %rax # sets pin 4 to output
+	movw $2, %ax
+	salw $6, %ax
+	orw %ax, (%rbx) # moves 00000000 10000000 into GPIO 4 (output and it is on)
 
-	addq $3, %rbx
-	movq $0x3, %rax
-	salq $4, %rax
-	addq $1, %rax
-	salq $0, %rax
-	orq %rbx, %rax # sets pin 1 to ON
 	ret
 
+					# sum   11101010 10000000 = ea, 80 (in hex)
+
+	ret
 ################
 #
 # Sets a GPIO pin to low
