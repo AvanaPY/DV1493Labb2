@@ -11,32 +11,42 @@ interrupt:
 
 setup:
 	movq $counter, %rax
-	addq $0x11, %rax		# gpio is exactly 0x11 steps from counter
-	movq %rax, GPIO
+	# addq $0x11, %rax		# gpio is exactly 0x11 steps from counter
+	# movq %rax, GPIO
+	movq $0x601061, GPIO
 
-	movq $3, %rax
 	movq GPIO, %rbx
 
-	movb $'1', (%rbx, %rax, 1)
-	
-	addq $1, %rax
-	movb $'0', (%rbx, %rax, 1)
-	
-	addq $1, %rax
-	movb $'1', (%rbx, %rax, 1)
-	
-	addq $1, %rax
-	movb $'0', (%rbx, %rax, 1)
+	movq $3, %rax
+	salq $14, %rax
+	orq %rbx, %rax # sets pin 0 to input
 
+	# movq $0x2, %rax
+	# salq $6, %rax
+	# salq $6, %rax
+	# orq %rbx, %rax # sets pin 1 to output
 
-	movq $0x2, %rax
-	sal $6, %rax
-	sal $6, %rax
-break:	
-	movq %rbx, %rcx
-	orq %rax, %rcx
-	movb $1, (%rbx)	
-	
+	# movq $0x2, %rax
+	# salq $6, %rax
+	# salq $4, %rax
+	# orq %rbx, %rax # sets pin 2 to output
+
+	# movq $0x2, %rax
+	# salq $6, %rax
+	# salq $2, %rax
+	# orq %rbx, %rax # sets pin 3 to output
+
+	# movq $0x2, %rax
+	# salq $6, %rax
+	# salq $0, %rax
+	# orq %rbx, %rax # sets pin 4 to output
+
+	addq $3, %rbx
+	movq $0x3, %rax
+	salq $4, %rax
+	addq $1, %rax
+	salq $0, %rax
+	orq %rbx, %rax # sets pin 1 to ON
 	ret
 
 ################

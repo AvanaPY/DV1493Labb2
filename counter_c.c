@@ -32,10 +32,12 @@ main(int argc, char *argv[]) {
 	system("/bin/stty raw");
 	setup();
 	while(1) {
-		display_gpio();
 		char btn = (char)getchar();
 		if(btn == 'q') break;
+		dump_gpio();
+		printf("before bool %d \n", (*(short*)gpio & 0xC000 ));
 		if(*(short*)gpio & 0xC000 ) {
+			printf("after bool %d \n", (*(short*)gpio & 0xC000 ));
 			gpio[2] = btn;
 			interrupt();
 		}
