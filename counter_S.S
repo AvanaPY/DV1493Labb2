@@ -6,6 +6,7 @@ GPIO:		.quad 0
 	.global interrupt
 
 interrupt:
+	add $1, counter
 	ret
 
 setup:
@@ -34,11 +35,46 @@ setup:
 	orw %ax, (%rbx) # moves 00000000 10000000 into GPIO 4 (output and it is on)
 
 			# sum   11101010 10000000 = ea, 80 (in hex)
+	
+	movq $1, %rdi
+	call setHigh
 
+	movq $2, %rdi
+	call setHigh
+
+	movq $1, %rdi
+	call setLow
 	ret
 ################
 #
-# Sets a GPIO pin to low
+# Sets a GPIO pin to low 
+#
+# Arguments:
+#	%rdi - pin number
+#
+################
+setHigh:
+	movq GPIO, %rax
+	addq $3, %rax
+
+	movq $4, %rbx
+	salq $3, %rbx
+	addq $1, %rbx
+
+	subq $1, %rdi
+_setHighShiftLoop:
+	cmp $0, %rdi
+	je _setHighLoopDone
+	salq $8, %rbx
+	subq $1, %rdi
+	jmp _setHighShiftLoop
+_setHighLoopDone:
+	orl %ebx, (%rax)
+	ret
+
+################
+#
+# Sets a GPIO pin to low 
 #
 # Arguments:
 #	%rdi - pin number
@@ -46,17 +82,18 @@ setup:
 ################
 setLow:
 	movq GPIO, %rax
-	addq $3, %rdi
-	movb $'1', (%rax, %rdi, 1)
-	ret
 
-################
-#
-# Sets a GPIO pin to high
-#
-# Arguments:
-#	%rdi - pin number
-#
-################
-setHigh:
+	addq $3, %rax
+	movq $0xCF, %rbx
+	
+	subq $1, %rdi
+_setLowShiftLoop:
+	cmp $0, %rdi
+	je _setLowLoopDone
+	salq $8, %rbx
+	subq $1, %rdi
+	jmp _setLowShiftLoop
+_setLowLoopDone:
+	not %rbx
+	andl %ebx, (%rax)
 	ret
