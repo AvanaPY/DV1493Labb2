@@ -7,6 +7,7 @@ GPIO:		.quad 0
 
 interrupt:
 	add $1, counter
+	
 	ret
 
 setup:
@@ -16,23 +17,23 @@ setup:
 
 	movw $3, %ax
 	salw $14, %ax
-	orw %ax, (%rbx) # moves 11000000 00000000 into GPIO 0 (input and it is on)
+	orw %ax, (%rbx) # moves 11000000 00000000 into GPIO (pin 0, input and it is not on)
 
 	movw $2, %ax
 	salw $12, %ax
-	orw %ax, (%rbx) # moves 00100000 00000000 into GPIO 1 (output and it is on)
+	orw %ax, (%rbx) # moves 00100000 00000000 into GPIO (pin 1, output and it is not on)
 
 	movw $2, %ax
 	salw $10, %ax
-	orw %ax, (%rbx) # moves 00001000 00000000 into GPIO 2 (output and it is on)
+	orw %ax, (%rbx) # moves 00001000 00000000 into GPIO (pin 2, output and it is not on)
 
 	movw $2, %ax
 	salw $8, %ax
-	orw %ax, (%rbx) # moves 00000010 00000000 into GPIO 3 (output and it is on)
+	orw %ax, (%rbx) # moves 00000010 00000000 into GPIO (pin 3, output and it is not on)
 
 	movw $2, %ax
 	salw $6, %ax
-	orw %ax, (%rbx) # moves 00000000 10000000 into GPIO 4 (output and it is on)
+	orw %ax, (%rbx) # moves 00000000 10000000 into GPIO (pin 4, output and it is not on)
 
 			# sum   11101010 10000000 = ea, 80 (in hex)
 	
